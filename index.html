@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Focus Flow — Intelligent Productivity</title>
+<meta name="description" content="Focus Flow is an AI-powered focus workspace: a focus timer, tasks, goals, notes, flashcards, mind maps, calendars, communities and KIRO — the study AI that shows its work." />
+<meta name="theme-color" content="#08090A" />
+<meta property="og:title" content="Focus Flow — Intelligent Productivity" />
+<meta property="og:description" content="One workspace for deep work and deep study. Timer, tasks, goals, notes, flashcards, mind maps and an AI that shows its work." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============ ICON SPRITE ============ -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" /><path d="M5.5 9.5V21h13V9.5" /><path d="M10 21v-6h4v6" /></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5.2l3.2 2" /></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.4" /></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4" /></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M15 21v-1.8a4 4 0 0 0-4-4H6.5a4 4 0 0 0-4 4V21" /><circle cx="8.75" cy="7.5" r="3.5" /><path d="M21.5 21v-1.8a4 4 0 0 0-3-3.86" /><path d="M16 3.6a4 4 0 0 1 0 7.75" /></symbol>
+    <symbol id="i-kiro" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.2" /><path d="M12 3.5a8.5 8.5 0 0 1 8.5 8.5" /><path d="M12 20.5A8.5 8.5 0 0 1 3.5 12" /><path d="M17.5 12a5.5 5.5 0 0 1-5.5 5.5" /><path d="M6.5 12A5.5 5.5 0 0 1 12 6.5" /></symbol>
+    <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="4" rx="1.2" /><path d="M16 4.5h2A1.5 1.5 0 0 1 19.5 6v14A1.5 1.5 0 0 1 18 21.5H6A1.5 1.5 0 0 1 4.5 20V6A1.5 1.5 0 0 1 6 4.5h2" /><path d="M8.5 11h7M8.5 15h5" /></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2" /><path d="M8 3v4M16 3v4M3.5 10h17" /></symbol>
+    <symbol id="i-check-square" viewBox="0 0 24 24"><path d="m9 11.5 2.8 2.8L20.5 5.5" /><path d="M20.5 12.5V19a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2H16" /></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3v5h5.5" /><path d="M19.5 8.5V20a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1H14l5.5 5.5Z" /><path d="M8 13h7M8 17h5" /></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3.5 13.5 8.5 4.75 8.5-4.75" /></symbol>
+    <symbol id="i-network" viewBox="0 0 24 24"><rect x="9.5" y="9.5" width="5" height="5" rx="1.2" /><circle cx="12" cy="4.5" r="2.2" /><circle cx="4.5" cy="18" r="2.2" /><circle cx="19.5" cy="18" r="2.2" /><path d="M12 6.7v2.8M10.6 12.9 6.2 16.6M13.4 12.9l4.4 3.7" /></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="13" rx="2" /><path d="M8.5 21h7M12 17v4" /></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v11" /><path d="m7.5 10.5 4.5 4.5 4.5-4.5" /><path d="M4.5 20.5h15" /></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h15" /><path d="m12.5 5 7 7-7 7" /></symbol>
+    <symbol id="i-android" viewBox="0 0 24 24"><path d="M6 11.5h12v7a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 18.5v-7Z" /><path d="M6.5 11.5a5.5 5.5 0 0 1 11 0" /><path d="m7.5 5 1.6 2.4M16.5 5l-1.6 2.4" /><circle cx="9.5" cy="8.6" r=".6" /><circle cx="14.5" cy="8.6" r=".6" /></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5 19 12 8 18.5V5.5Z" /></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14" /></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7L3.5 8.8" /><path d="M3.5 3.5v5.3h5.3" /></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.5 4.5" /></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8.5a6 6 0 0 0-12 0c0 6-2.5 8-2.5 8h17S18 14.5 18 8.5Z" /><path d="M13.7 20.5a2 2 0 0 1-3.4 0" /></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" /><path d="M18.5 16.5 19.2 18.3 21 19l-1.8.7-.7 1.8-.7-1.8L16 19l1.8-.7.7-1.8Z" /></symbol>
+  </defs>
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="top">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top" aria-label="Focus Flow home">
+      <span class="mark mark--sm">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="mark__stroke" pathLength="100" d="M30 80 C 30 80, 30 20, 70 20 M 30 50 L 60 50" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+          <circle class="mark__spark-glow" cx="70" cy="20" r="12" fill="currentColor" />
+          <circle class="mark__spark" cx="70" cy="20" r="6" fill="currentColor" />
+        </svg>
+      </span>
+      <span class="brand__text">
+        <span class="brand__name">Focus<span class="brand__dash">-</span>Flow</span>
+        <span class="brand__tag">Intelligent Productivity</span>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#inside">Inside</a>
+      <a href="#focus">Focus</a>
+      <a href="#kiro">KIRO</a>
+      <a href="#study">Study</a>
+      <a href="#community">Community</a>
+      <a href="#platforms">Get it</a>
+    </nav>
+
+    <div class="header-cta">
+      <a class="btn btn--primary btn--sm" href="https://focus-flow-q9qx.onrender.com" target="_blank" rel="noopener noreferrer">
+        Open the app
+        <svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<main>
+<section class="hero">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+
+    <div class="hero-copy">
+      <p class="eyebrow reveal">Intelligent Productivity</p>
+      <h1 class="hero-title reveal" style="--d:.06s">
+        Enter the<br /><em>state.</em>
+      </h1>
+      <p class="hero-lead reveal" style="--d:.12s">
+        Focus Flow is one workspace for the way you actually study and work — a focus timer, tasks,
+        goals, notes, flashcards, mind maps, calendars, communities and <strong>KIRO</strong>, an AI
+        assistant that researches, cites its sources and builds your study material for you.
+        Thirteen tools, one login, no tab-switching.
+      </p>
+
+      <div class="cta-row reveal" style="--d:.18s">
+        <a class="btn btn--primary" href="https://focus-flow-q9qx.onrender.com" target="_blank" rel="noopener noreferrer">
+          Open the web app
+          <svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg>
+        </a>
+        <button class="btn btn--disabled" type="button" disabled aria-disabled="true" title="The Windows build is on its way">
+          <svg class="i" aria-hidden="true"><use href="#i-download" /></svg>
+          Download for Windows
+          <span class="chip chip--soon">Coming soon</span>
+        </button>
+      </div>
+
+      <p class="cta-note reveal" style="--d:.22s">
+        <svg class="i" aria-hidden="true"><use href="#i-android" /></svg>
+        On a phone? The <strong>Android app is under progress</strong> and will be released soon —
+        the web app already adapts to mobile with a thumb-reachable tab bar.
+      </p>
+
+      <ul class="stat-row reveal" style="--d:.26s">
+        <li><b>13</b><span>workspaces</span></li>
+        <li><b>1</b><span>AI assistant</span></li>
+        <li><b>0</b><span>rupees to start</span></li>
+      </ul>
+    </div>
+
+    <!-- Live app mock -->
+    <div class="hero-demo reveal" style="--d:.2s" aria-hidden="true">
+      <div class="app-window">
+        <div class="app-window__bar">
+          <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
+          <span class="app-window__url">focus-flow-q9qx.onrender.com</span>
+        </div>
+        <div class="app-body">
+          <aside class="app-side">
+            <div class="app-side__brand">
+              <span class="mark mark--xs">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="mark__stroke mark__stroke--instant" pathLength="100" d="M30 80 C 30 80, 30 20, 70 20 M 30 50 L 60 50" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+                  <circle class="mark__spark" cx="70" cy="20" r="6" fill="currentColor" />
+                </svg>
+              </span>
+              <span>Focus-Flow</span>
+            </div>
+            <ul class="app-nav">
+              <li class="is-active"><svg class="i"><use href="#i-home" /></svg>Home</li>
+              <li><svg class="i"><use href="#i-clock" /></svg>Timer</li>
+              <li><svg class="i"><use href="#i-target" /></svg>Monthly Goals</li>
+              <li><svg class="i"><use href="#i-activity" /></svg>Progress</li>
+              <li><svg class="i"><use href="#i-users" /></svg>Community</li>
+              <li><svg class="i"><use href="#i-kiro" /></svg>KIRO</li>
+              <li><svg class="i"><use href="#i-clipboard" /></svg>Planner</li>
+              <li><svg class="i"><use href="#i-calendar" /></svg>Calendar</li>
+              <li><svg class="i"><use href="#i-check-square" /></svg>ToDo</li>
+              <li><svg class="i"><use href="#i-file" /></svg>Notes</li>
+              <li><svg class="i"><use href="#i-layers" /></svg>Flash cards</li>
+              <li><svg class="i"><use href="#i-network" /></svg>Mind Maps</li>
+            </ul>
+          </aside>
+
+          <div class="app-main">
+            <div class="app-topbar">
+              <span class="app-topbar__hello">Hello! <b>@scholar</b></span>
+              <span class="app-topbar__time"><i id="mock-clock">01:53 PM</i> · <span id="mock-date">Saturday, September 5</span></span>
+              <span class="app-topbar__icons">
+                <svg class="i"><use href="#i-bell" /></svg>
+                <span class="app-avatar"><svg class="i"><use href="#i-users" /></svg></span>
+              </span>
+            </div>
+
+            <div class="app-panels">
+              <div class="panel panel--tasks">
+                <h3>Active tasks <span>0/3</span></h3>
+                <ul>
+                  <li>Refactor core loop</li>
+                  <li>Update design</li>
+                  <li>Client CRUD</li>
+                </ul>
+                <div class="daily-goal">
+                  <span class="mini-label">Daily goal</span>
+                  <b>4/8</b> tasks
+                  <span class="bar"><span style="width:50%"></span></span>
+                </div>
+              </div>
+
+              <div class="panel panel--timer">
+                <span class="chip chip--live"><span class="pulse"></span>Focus session ready</span>
+                <div class="mock-time" id="mock-timer">24:58</div>
+                <div class="mock-controls">
+                  <button class="mock-btn" id="mock-play" type="button" tabindex="-1"><svg class="i"><use href="#i-play" /></svg></button>
+                  <button class="mock-btn mock-btn--ghost" id="mock-reset" type="button" tabindex="-1"><svg class="i"><use href="#i-reset" /></svg></button>
+                </div>
+                <div class="mock-sessions"><b id="mock-sessions">3</b><span>SESSIONS</span></div>
+              </div>
+
+              <div class="panel panel--stream">
+                <h3>Activity stream</h3>
+                <ul class="stream">
+                  <li><svg class="i"><use href="#i-clock" /></svg><div>Completed 45 min focus session<em>2 hours ago</em></div></li>
+                  <li><svg class="i"><use href="#i-layers" /></svg><div>Studied JavaScript flashcards<em>4 hours ago</em></div></li>
+                  <li><svg class="i"><use href="#i-check-square" /></svg><div>Completed 3 daily tasks<em>Yesterday</em></div></li>
+                </ul>
+                <h3>Flow goals</h3>
+                <div class="goal">
+                  <div class="goal__top">Achieve 2h daily focus <b>72%</b></div>
+                  <span class="bar"><span style="width:72%"></span></span>
+                  <em>1h 26m of 2h completed</em>
+                </div>
+                <div class="goal">
+                  <div class="goal__top">Review 10 flashcards <b>45%</b></div>
+                  <span class="bar"><span style="width:45%"></span></span>
+                  <em>4 of 10 completed</em>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel--matrix">
+              <h3>Consistency matrix <span class="streak">🔥 1 day streak</span></h3>
+              <div class="matrix" id="mock-matrix"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span>Home</span><span>Timer</span><span>Monthly Goals</span><span>Progress</span><span>Community</span><span>KIRO</span><span>Planner</span><span>Calendar</span><span>ToDo</span><span>Notes</span><span>Flash Cards</span><span>Mind Maps</span><span>Settings</span>
+      <span>Home</span><span>Timer</span><span>Monthly Goals</span><span>Progress</span><span>Community</span><span>KIRO</span><span>Planner</span><span>Calendar</span><span>ToDo</span><span>Notes</span><span>Flash Cards</span><span>Mind Maps</span><span>Settings</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT'S INSIDE ============ -->
+<section class="section" id="inside">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <p class="eyebrow">The whole workspace</p>
+      <h2>Thirteen destinations. <br class="br-desk" />One login, one memory.</h2>
+      <p class="section-lead">
+        Focus Flow is not a collection of disconnected widgets. Your tasks, sessions, decks, maps and
+        communities all live in the same account and feed the same progress stats — so what you do in
+        the timer shows up in your streak, and what KIRO generates lands straight in your decks.
+      </p>
+    </header>
+
+    <ol class="module-index">
+      <li class="reveal"><span class="num">01</span><svg class="i"><use href="#i-home" /></svg><b>Home</b><p>Your day at a glance: active tasks, focus session, flow goals, activity stream and the consistency matrix.</p></li>
+      <li class="reveal" style="--d:.03s"><span class="num">02</span><svg class="i"><use href="#i-clock" /></svg><b>Timer</b><p>A distraction-free focus session with play / reset controls, a session counter and an audio cue when time is up.</p></li>
+      <li class="reveal" style="--d:.06s"><span class="num">03</span><svg class="i"><use href="#i-target" /></svg><b>Monthly Goals</b><p>Pick the big things that matter this month, track active vs. completed, and keep the big picture in view.</p></li>
+      <li class="reveal" style="--d:.09s"><span class="num">04</span><svg class="i"><use href="#i-activity" /></svg><b>Progress</b><p>Streaks, weekly vs. monthly pace, a 30-day and full-year consistency graph and a breakdown of your milestones.</p></li>
+      <li class="reveal" style="--d:.12s"><span class="num">05</span><svg class="i"><use href="#i-users" /></svg><b>Community</b><p>Create or join study spaces, post in channels, run announcements, and moderate with roles, join requests and bans.</p></li>
+      <li class="reveal" style="--d:.15s"><span class="num">06</span><svg class="i"><use href="#i-kiro" /></svg><b>KIRO</b><p>The AI assistant: web research with citations, video summaries, notes, flashcards and study plans.</p></li>
+      <li class="reveal" style="--d:.18s"><span class="num">07</span><svg class="i"><use href="#i-clipboard" /></svg><b>Planner</b><p>Plan in day, week, month or year view, then step backwards and forwards through time without losing context.</p></li>
+      <li class="reveal" style="--d:.21s"><span class="num">08</span><svg class="i"><use href="#i-calendar" /></svg><b>Calendar</b><p>Month grid with events you can create and edit in place — deadlines sit next to everything else.</p></li>
+      <li class="reveal" style="--d:.24s"><span class="num">09</span><svg class="i"><use href="#i-check-square" /></svg><b>ToDo</b><p>Daily task lists with completion counts, weekly pace and a daily goal so you know when you are actually done.</p></li>
+      <li class="reveal" style="--d:.27s"><span class="num">10</span><svg class="i"><use href="#i-file" /></svg><b>Notes</b><p>Write it down, then let KIRO turn it into a summary, a detailed study note or a concept breakdown.</p></li>
+      <li class="reveal" style="--d:.3s"><span class="num">11</span><svg class="i"><use href="#i-layers" /></svg><b>Flash Cards</b><p>Build decks manually or generate them from a prompt, study them with a flip player, and read your recall analytics.</p></li>
+      <li class="reveal" style="--d:.33s"><span class="num">12</span><svg class="i"><use href="#i-network" /></svg><b>Mind Maps</b><p>Branch a topic into a visual tree, auto-arrange it, colour the branches and elaborate on any node with AI.</p></li>
+      <li class="reveal" style="--d:.36s"><span class="num">13</span><svg class="i"><use href="#i-spark" /></svg><b>Settings</b><p>Profile, avatar, theme and your own AI keys (OpenRouter, Google Gemini or a custom endpoint), saved and masked.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ FOCUS ENGINE ============ -->
+<section class="section section--split" id="focus">
+  <div class="wrap split">
+    <div class="split__copy reveal">
+      <p class="eyebrow">01 — Focus engine</p>
+      <h2>A timer that is actually part of your day.</h2>
+      <p>
+        Most timers stop at counting down. Focus Flow's session sits inside your dashboard: the tasks
+        you are working through are on the left, the activity you have already banked is on the right,
+        and the time you just spent lands in your consistency matrix the moment you finish.
+      </p>
+      <ul class="ticks">
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Focus session, front and centre.</b> A huge legible clock, play and reset, and a session counter that keeps you honest.</div></li>
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Audio cues included.</b> Notification and beep sounds so you can look away from the screen without losing the session.</div></li>
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Active tasks beside it.</b> See today's list without leaving the timer — check one off and keep going.</div></li>
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Flow goals with real progress.</b> "Achieve 2h daily focus" fills up from your actual sessions, not from wishful checkboxes.</div></li>
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Monthly goals above the daily grind.</b> Set the big targets once a month and watch them convert into daily work.</div></li>
+      </ul>
+    </div>
+
+    <div class="split__visual reveal" style="--d:.1s">
+      <div class="timer-card">
+        <span class="chip chip--live"><span class="pulse"></span>Focus session active</span>
+        <div class="timer-big" id="demo-timer">24:58</div>
+        <div class="mock-controls">
+          <button class="mock-btn" id="demo-play" type="button" aria-label="Play or pause the demo timer"><svg class="i"><use href="#i-play" /></svg></button>
+          <button class="mock-btn mock-btn--ghost" id="demo-reset" type="button" aria-label="Reset the demo timer"><svg class="i"><use href="#i-reset" /></svg></button>
+        </div>
+        <div class="mock-sessions"><b id="demo-sessions">3</b><span>SESSIONS TODAY</span></div>
+        <div class="timer-foot">
+          <span>ZEN MODE: ON</span><span>NOTIFICATIONS: ON</span><span>BUILD 2026.9</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KIRO ============ -->
+<section class="section section--kiro" id="kiro">
+  <div class="wrap">
+    <div class="kiro-head reveal">
+      <div class="kiro-badge" data-kiro="idle" aria-hidden="true">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="kiro-blur" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="8" result="blur" />
+              <feColorMatrix in="blur" type="saturate" values="1.5" />
+            </filter>
+            <radialGradient id="kiro-grad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#6EE7B7" />
+              <stop offset="100%" stop-color="rgba(110,231,183,0)" />
+            </radialGradient>
+          </defs>
+          <circle class="kiro-energy" cx="50" cy="50" r="48" fill="url(#kiro-grad)" filter="url(#kiro-blur)" />
+          <g class="kiro-ring1"><circle cx="50" cy="50" r="30" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="60 128" opacity=".6" /></g>
+          <g class="kiro-ring2"><circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="50 200" opacity=".4" /></g>
+          <circle class="kiro-core" cx="50" cy="50" r="10" fill="currentColor" stroke="rgba(255,255,255,.25)" stroke-width=".5" />
+          <circle class="kiro-core" cx="50" cy="50" r="4" fill="#07110D" opacity=".85" />
+        </svg>
+      </div>
+      <div>
+        <p class="eyebrow">02 — Meet KIRO</p>
+        <h2>The assistant that shows its work.</h2>
+        <p class="section-lead">
+          KIRO is wired into every part of Focus Flow. Ask it anything and it streams back an answer
+          with the steps it took on screen — searching the web, pulling a video transcript, or writing
+          your deck. You can watch it think, and check every source it used.
+        </p>
+      </div>
+    </div>
+
+    <div class="kiro-grid">
+      <div class="kiro-steps reveal" aria-hidden="true">
+        <div class="step step--done"><span class="step__dot"></span>🔎 Searching the web for sources…</div>
+        <div class="step step--done"><span class="step__dot"></span>📄 Found 6 results, deduplicated and cleaned</div>
+        <div class="step step--live"><span class="step__dot"></span>🧠 Drafting answer with citations…</div>
+        <div class="step step--wait"><span class="step__dot"></span>💬 Streaming response</div>
+        <div class="kiro-hint">Every source is a link that opens in a new tab — nothing is paraphrased away.</div>
+      </div>
+
+      <div class="kiro-features">
+        <article class="kfeat reveal"><h3>Live web research</h3><p>For anything that moves fast — news, versions, deadlines — KIRO runs a real search, pulls the snippets, and answers with clickable citations inline.</p></article>
+        <article class="kfeat reveal" style="--d:.05s"><h3>YouTube video analysis</h3><p>Drop a video link and it extracts the transcript, plays the video in the chat, and hands back a structured summary of what was actually said.</p></article>
+        <article class="kfeat reveal" style="--d:.1s"><h3>Three study modes</h3><p>Ask for a <b>Summary</b>, a <b>Detailed Study Note</b> with definitions, examples and practice questions, or a <b>Concept Breakdown</b> of how ideas relate.</p></article>
+        <article class="kfeat reveal" style="--d:.15s"><h3>Writes straight into your workspace</h3><p>“Generate 10 flashcards about organic chemistry” creates a real deck in Flash Cards. Notes turn into summaries. No copy-paste between tools.</p></article>
+        <article class="kfeat reveal" style="--d:.2s"><h3>Math and markdown, rendered</h3><p>Answers come back with working LaTeX and clean markdown, so derivations and code blocks stay readable instead of collapsing into <code>$$</code> soup.</p></article>
+        <article class="kfeat reveal" style="--d:.25s"><h3>Your keys, your models</h3><p>Bring your own OpenRouter, Google Gemini or custom endpoint key in Settings. Keys are masked, saved to your account and stay in your control.</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STUDY TOOLS ============ -->
+<section class="section" id="study">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <p class="eyebrow">03 — Study tools</p>
+      <h2>From “I should learn this” to actually knowing it.</h2>
+      <p class="section-lead">Two tools do the heavy lifting: decks for recall, maps for understanding. Both accept AI-generated starting points so you never face a blank page.</p>
+    </header>
+
+    <div class="study-grid">
+      <div class="study-col reveal">
+        <div class="study-label"><svg class="i"><use href="#i-layers" /></svg> Flash cards</div>
+        <div class="flip" id="flip" role="button" tabindex="0" aria-label="Flip the sample flashcard">
+          <div class="flip__inner">
+            <div class="flip__face flip__front">
+              <span class="flip__deck">DECK · JAVASCRIPT</span>
+              <p>What does <code>Array.prototype.reduce()</code> return?</p>
+              <span class="flip__hint">Tap to flip</span>
+            </div>
+            <div class="flip__face flip__back">
+              <span class="flip__deck">ANSWER</span>
+              <p>A single accumulated value — the result of applying a reducer function against each element.</p>
+              <span class="flip__hint">Tap to flip back</span>
+            </div>
+          </div>
+        </div>
+        <ul class="ticks ticks--tight">
+          <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Study Deck</b> with manual and AI-generated decks side by side.</div></li>
+          <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Configure a deck</b> — topic, number of cards, difficulty — and let KIRO write it.</div></li>
+          <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Flip player</b> with progress through the deck and a place to edit cards on the fly.</div></li>
+          <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Study analytics</b> that tell you which cards are shaky before the exam does.</div></li>
+        </ul>
+      </div>
+
+      <div class="study-col reveal" style="--d:.1s">
+        <div class="study-label"><svg class="i"><use href="#i-network" /></svg> Mind maps</div>
+        <div class="map-card">
+          <svg viewBox="0 0 420 240" class="map-svg" role="img" aria-label="Example mind map branching from one central topic">
+            <g class="map-lines" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5">
+              <path pathLength="100" d="M210 120 C 160 120, 150 60, 100 58" />
+              <path pathLength="100" d="M210 120 C 160 120, 150 96, 96 96" />
+              <path pathLength="100" d="M210 120 C 165 130, 150 178, 96 180" />
+              <path pathLength="100" d="M210 120 C 260 120, 275 62, 330 60" />
+              <path pathLength="100" d="M210 120 C 260 124, 280 118, 340 118" />
+              <path pathLength="100" d="M210 120 C 262 132, 278 182, 330 184" />
+            </g>
+            <g class="map-nodes">
+              <g class="node node--root"><rect x="164" y="104" width="92" height="32" rx="16" /><text x="210" y="124">Photosynthesis</text></g>
+              <g class="node"><rect x="34" y="42" width="72" height="30" rx="15" /><text x="70" y="61">Light</text></g>
+              <g class="node"><rect x="30" y="81" width="82" height="30" rx="15" /><text x="71" y="100">Chlorophyll</text></g>
+              <g class="node"><rect x="24" y="165" width="88" height="30" rx="15" /><text x="68" y="184">Equation</text></g>
+              <g class="node"><rect x="300" y="44" width="64" height="30" rx="15" /><text x="332" y="63">Water</text></g>
+              <g class="node"><rect x="308" y="103" width="72" height="30" rx="15" /><text x="344" y="122">CO₂</text></g>
+              <g class="node"><rect x="300" y="169" width="72" height="30" rx="15" /><text x="336" y="188">Glucose</text></g>
+            </g>
+          </svg>
+          <span class="map-card__foot">Auto-arranged layout · branch colours · AI elaboration on any node</span>
+        </div>
+        <ul class="ticks ticks--tight">
+          <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Branch visually</b> — add a child to any node, nest as deep as the topic needs.</div></li>
+          <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Auto layout</b> keeps a 60-node map readable instead of a pile of overlapping boxes.</div></li>
+          <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Elaborate with AI</b> — ask KIRO to expand a node into a fuller explanation.</div></li>
+          <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Colour branches</b> so each stream of a topic is visually separate at a glance.</div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLAN & TRACK ============ -->
+<section class="section section--split" id="track">
+  <div class="wrap split split--rev">
+    <div class="split__copy reveal">
+      <p class="eyebrow">04 — Plan &amp; track</p>
+      <h2>Plans on the left. Proof on the right.</h2>
+      <p>
+        Plan the week in the Planner, drop the deadlines in the Calendar, and keep today's list in
+        ToDo. Then let Progress close the loop: every completed task, finished session and studied
+        card writes itself into your streak and your consistency graph — no manual logging.
+      </p>
+      <ul class="ticks">
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Planner</b> in day, week, month and year views, with events you can create and edit in place.</div></li>
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Calendar</b> grid for the month, so deadlines never live in a different app.</div></li>
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>ToDo</b> with completion counts, weekly pace and a daily goal target.</div></li>
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Notes</b> with AI summarisation, study notes and concept breakdowns.</div></li>
+        <li><svg class="i"><use href="#i-check-square" /></svg><div><b>Progress</b> with streaks, consistency matrix, and a 30-day or full-year activity graph.</div></li>
+      </ul>
+    </div>
+
+    <div class="split__visual reveal" style="--d:.1s">
+      <div class="track-card">
+        <div class="track-card__row">
+          <span class="streak"><svg class="i"><use href="#i-activity" /></svg> 12 day streak</span>
+          <span class="mini-label">30-DAY ACTIVITY</span>
+        </div>
+        <div class="matrix matrix--big" id="track-matrix"></div>
+        <div class="track-stats">
+          <div><b>47</b><span>FRIENDLY UNITS OF FOCUS</span></div>
+          <div><b>2h 14m</b><span>AVERAGE SESSION DAY</span></div>
+          <div><b>18</b><span>CARDS STUDIED THIS WEEK</span></div>
+        </div>
+        <div class="pace">
+          <span class="mini-label">WEEKLY PACE</span>
+          <div class="bars" id="pace-bars"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMMUNITY ============ -->
+<section class="section" id="community">
+  <div class="wrap community">
+    <div class="community__copy reveal">
+      <p class="eyebrow">05 — Community</p>
+      <h2>Find your tribe.</h2>
+      <p class="section-lead">
+        Focus is easier with people around. Create a study space for your class, your cohort or your
+        obsession, then run it properly: three kinds of doors, real moderation, and announcements that
+        don't drown in the chat.
+      </p>
+      <div class="doors">
+        <div class="door reveal"><b>Public</b><p>Anyone can dive straight in.</p></div>
+        <div class="door reveal" style="--d:.05s"><b>Approval</b><p>Admins vet each request before it lands.</p></div>
+        <div class="door reveal" style="--d:.1s"><b>Invite code</b><p>Invite-only access for a closed group.</p></div>
+      </div>
+    </div>
+    <div class="community__visual reveal" style="--d:.15s">
+      <div class="room-card">
+        <div class="room-card__head">
+          <span class="room-card__name"># announcements</span>
+          <span class="chip chip--soon chip--flat">News</span>
+        </div>
+        <p>Mock test syllabus is out — chapters 4 to 9. Timer session tonight at 8 PM, join the focus room.</p>
+        <div class="room-card__meta"><span>Admin · Inthiyaz</span><span>Today</span></div>
+        <div class="room-card__head room-card__head--sub">
+          <span class="room-card__name"># physics-101</span>
+          <span class="chip chip--soon chip--flat">Text</span>
+        </div>
+        <div class="msg"><span class="msg__av"></span><p><b>@ayaan</b> pushed a mind map for wave optics, someone check the branch on refraction?</p></div>
+        <div class="msg"><span class="msg__av msg__av--b"></span><p><b>@scholar</b> done — also made a 12-card deck from it, deck's in the space now.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLATFORMS ============ -->
+<section class="section" id="platforms">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <p class="eyebrow">06 — Get Focus Flow</p>
+      <h2>Runs in your browser today. Everywhere else, soon.</h2>
+      <p class="section-lead">The web app is live right now and is the fastest way in. A Windows desktop build and an Android app are in the works.</p>
+    </header>
+
+    <div class="platforms">
+      <article class="platform platform--live reveal">
+        <div class="platform__top">
+          <svg class="i i--lg"><use href="#i-monitor" /></svg>
+          <span class="chip chip--live"><span class="pulse"></span>Live</span>
+        </div>
+        <h3>Web app</h3>
+        <p>Open it in any modern browser and sign in — your workspace syncs to your account, so your streaks and decks follow you between machines. Works on phones with a mobile layout and a thumb-reachable tab bar.</p>
+        <a class="btn btn--primary" href="https://focus-flow-q9qx.onrender.com" target="_blank" rel="noopener noreferrer">
+          Open the web app
+          <svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg>
+        </a>
+      </article>
+
+      <article class="platform platform--soon reveal" style="--d:.06s">
+        <div class="platform__top">
+          <svg class="i i--lg"><use href="#i-download" /></svg>
+          <span class="chip chip--soon">Coming soon</span>
+        </div>
+        <h3>Windows app</h3>
+        <p>A desktop build with a native window, system tray, notifications and offline-friendly startup — everything from the web app, wrapped for your taskbar. The installer is being polished before it goes out.</p>
+        <button class="btn btn--disabled" type="button" disabled aria-disabled="true">
+          <svg class="i" aria-hidden="true"><use href="#i-download" /></svg>
+          Download for Windows
+        </button>
+        <p class="platform__fine">Not available yet — use the web app in the meantime.</p>
+      </article>
+
+      <article class="platform platform--soon reveal" style="--d:.12s">
+        <div class="platform__top">
+          <svg class="i i--lg"><use href="#i-android" /></svg>
+          <span class="chip chip--soon">Under progress</span>
+        </div>
+        <h3>Android app</h3>
+        <p>An Android version is under active development right now. It wraps the same Focus Flow experience for your phone, talking to the same backend, so your sessions and streaks stay in sync with the web app.</p>
+        <button class="btn btn--disabled" type="button" disabled aria-disabled="true">
+          <svg class="i" aria-hidden="true"><use href="#i-android" /></svg>
+          Android — coming soon
+        </button>
+        <p class="platform__fine">In development. We'll announce it here when it ships.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="cta-band">
+  <div class="wrap cta-band__inner reveal">
+    <div>
+      <p class="eyebrow">Ready when you are</p>
+      <h2>Your next focus session is one click away.</h2>
+      <p class="cta-note cta-note--center">
+        Windows app coming soon · Android app under progress and coming soon
+      </p>
+    </div>
+    <div class="cta-row cta-row--center">
+      <a class="btn btn--primary btn--lg" href="https://focus-flow-q9qx.onrender.com" target="_blank" rel="noopener noreferrer">
+        Open the web app
+        <svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg>
+      </a>
+      <button class="btn btn--disabled btn--lg" type="button" disabled aria-disabled="true">
+        <svg class="i" aria-hidden="true"><use href="#i-download" /></svg>
+        Download for Windows
+        <span class="chip chip--soon">Coming soon</span>
+      </button>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <span class="mark mark--sm">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="mark__stroke" pathLength="100" d="M30 80 C 30 80, 30 20, 70 20 M 30 50 L 60 50" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+          <circle class="mark__spark" cx="70" cy="20" r="6" fill="currentColor" />
+        </svg>
+      </span>
+      <div>
+        <b>Focus<span class="brand__dash">-</span>Flow</b>
+        <p>Intelligent Productivity · Enter the state.</p>
+      </div>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="#inside">Features</a>
+      <a href="#kiro">KIRO</a>
+      <a href="#platforms">Get the app</a>
+      <a href="https://focus-flow-q9qx.onrender.com" target="_blank" rel="noopener noreferrer">Open web app ↗</a>
+    </nav>
+    <p class="footer-fine">
+      Web app live at focus-flow-q9qx.onrender.com · Windows app coming soon · Android app under progress.
+    </p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
